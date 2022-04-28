@@ -25,12 +25,11 @@ import (
 	_ "github.com/matrix-org/go-neb/services/echo"
 	_ "github.com/matrix-org/go-neb/services/giphy"
 	_ "github.com/matrix-org/go-neb/services/github"
-
 	_ "github.com/matrix-org/go-neb/services/google"
 	_ "github.com/matrix-org/go-neb/services/guggy"
 	_ "github.com/matrix-org/go-neb/services/imgur"
-
 	_ "github.com/matrix-org/go-neb/services/jira"
+	_ "github.com/matrix-org/go-neb/services/mumble"
 	_ "github.com/matrix-org/go-neb/services/rssbot"
 	_ "github.com/matrix-org/go-neb/services/slackapi"
 	_ "github.com/matrix-org/go-neb/services/travisci"
