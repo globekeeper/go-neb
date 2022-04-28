@@ -92,6 +92,16 @@ services:
     Config:
       api_key: "AIzaSyA4FD39m9"
 
+  - ID: "mumble_service"
+    Type: "mumble"
+    UserID: "@goneb:localhost"
+    Config:
+      endpoint: "voice.mumble.de:64738"
+      username: "mumbleuser"
+      password: "mumblepw"
+      room: "!xyjdjfdfsf:localhost"
+      ignoredUsers: ["mumblemusicbot"]
+
   - ID: "wikipedia_service"
     Type: "wikipedia"
     UserID: "@goneb:localhost" # requires a Syncing client

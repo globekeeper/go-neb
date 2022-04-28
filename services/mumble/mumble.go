@@ -3,9 +3,10 @@ package mumble
 import (
 	"crypto/tls"
 	"fmt"
+	"net"
+
 	"layeh.com/gumble/gumble"
 	"layeh.com/gumble/gumbleutil"
-	"net"
 
 	"github.com/matrix-org/go-neb/types"
 	mevt "maunium.net/go/mautrix/event"
@@ -16,11 +17,12 @@ const ServiceType = "mumble"
 
 type Service struct {
 	types.DefaultService
-	Endpoint string `json:"endpoint"`
-	Insecure bool   `json:"insecure"`
-	Username string `json:"username"`
-	Password string `json:"password"`
-	Room     string `json:"room"`
+	Endpoint     string   `json:"endpoint"`
+	Insecure     bool     `json:"insecure"`
+	Username     string   `json:"username"`
+	Password     string   `json:"password"`
+	Room         string   `json:"room"`
+	IgnoredUsers []string `json:"ignoredUsers"`
 }
 
 func (s *Service) Register(oldService types.Service, client types.MatrixClient) error {
@@ -31,6 +33,12 @@ func (s *Service) Register(oldService types.Service, client types.MatrixClient) 
 
 	config.Attach(gumbleutil.Listener{
 		UserChange: func(e *gumble.UserChangeEvent) {
+			for _, u := range s.IgnoredUsers {
+				if u == e.User.Name {
+					return
+				}
+			}
+
 			if e.Type.Has(gumble.UserChangeConnected) {
 				msg := mevt.MessageEventContent{
 					Body:    fmt.Sprintf("User %s has joined Mumble", e.User.Name),
