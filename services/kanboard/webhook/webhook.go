@@ -35,6 +35,11 @@ type TaskMoveColumnChanges struct {
 	DateMoved   int `json:"date_moved"`
 }
 
+type TaskCreateEvent struct {
+	TaskId int  `json:"task_id"`
+	Task   Task `json:"task"`
+}
+
 type TaskAssigneeChangeEvent struct {
 	TaskId  int                       `json:"task_id"`
 	Task    Task                      `json:"task"`
@@ -62,7 +67,7 @@ type Task struct {
 	CreatorName      string `json:"creator_name"`
 }
 
-// return eventName, projectID, message
+// return eventName, projectID, message, error
 func OnReceiveRequest(r *http.Request, secretToken string, endpoint string) (string, int, *mevt.MessageEventContent, error) {
 	bodyData, err := ioutil.ReadAll(r.Body)
 	if err != nil {
@@ -77,29 +82,42 @@ func OnReceiveRequest(r *http.Request, secretToken string, endpoint string) (str
 
 	switch req.EventName {
 	case "task.move.column":
-		var tmc TaskMoveColumnEvent
-		if err := json.Unmarshal([]byte(req.EventData), &tmc); err != nil {
+		var evtData TaskMoveColumnEvent
+		if err := json.Unmarshal([]byte(req.EventData), &evtData); err != nil {
 			return "", 0, nil, err
 		}
 
-		return req.EventName, tmc.Task.ProjectId, &mevt.MessageEventContent{
+		return req.EventName, evtData.Task.ProjectId, &mevt.MessageEventContent{
 			MsgType:       mevt.MsgNotice,
-			Body:          fmt.Sprintf("Task %s moved to %s by %s", tmc.Task.Title, tmc.Task.ColumnTitle, req.EventAuthor),
+			Body:          fmt.Sprintf("Task %s moved to %s by %s", evtData.Task.Title, evtData.Task.ColumnTitle, req.EventAuthor),
 			Format:        mevt.FormatHTML,
-			FormattedBody: fmt.Sprintf("Task <a href=\"%s/task/%d\">%s</a> moved to <b>%s</b> <i>by %s</i>", endpoint, tmc.Task.Id, tmc.Task.Title, tmc.Task.ColumnTitle, req.EventAuthor),
+			FormattedBody: fmt.Sprintf("Task <a href=\"%s/task/%d\">%s</a> moved to <b>%s</b> <i>by %s</i>", endpoint, evtData.Task.Id, evtData.Task.Title, evtData.Task.ColumnTitle, req.EventAuthor),
+		}, nil
+
+	case "task.create":
+		var evtData TaskCreateEvent
+		if err := json.Unmarshal([]byte(req.EventData), &evtData); err != nil {
+			return "", 0, nil, err
+		}
+
+		return req.EventName, evtData.Task.ProjectId, &mevt.MessageEventContent{
+			MsgType:       mevt.MsgNotice,
+			Body:          fmt.Sprintf("Task %s created by %s", evtData.Task.Title, req.EventAuthor),
+			Format:        mevt.FormatHTML,
+			FormattedBody: fmt.Sprintf("Task <a href=\"%s/task/%d\">%s</a> created <i>by %s</i>", endpoint, evtData.Task.Id, evtData.Task.Title, req.EventAuthor),
 		}, nil
 
 	case "task.assignee_change":
-		var tac TaskAssigneeChangeEvent
-		if err := json.Unmarshal([]byte(req.EventData), &tac); err != nil {
+		var evtData TaskAssigneeChangeEvent
+		if err := json.Unmarshal([]byte(req.EventData), &evtData); err != nil {
 			return "", 0, nil, err
 		}
 
-		return req.EventName, tac.Task.ProjectId, &mevt.MessageEventContent{
+		return req.EventName, evtData.Task.ProjectId, &mevt.MessageEventContent{
 			MsgType:       mevt.MsgNotice,
-			Body:          fmt.Sprintf("Task %s assigned to %s by %s", tac.Task.Title, tac.Task.AssigneeName, req.EventAuthor),
+			Body:          fmt.Sprintf("Task %s assigned to %s by %s", evtData.Task.Title, evtData.Task.AssigneeName, req.EventAuthor),
 			Format:        mevt.FormatHTML,
-			FormattedBody: fmt.Sprintf("Task <a href=\"%s/task/%d\">%s</a> assigned to <b>%s</b> <i>by %s</i>", endpoint, tac.Task.Id, tac.Task.Title, tac.Task.AssigneeName, req.EventAuthor),
+			FormattedBody: fmt.Sprintf("Task <a href=\"%s/task/%d\">%s</a> assigned to <b>%s</b> <i>by %s</i>", endpoint, evtData.Task.Id, evtData.Task.Title, evtData.Task.AssigneeName, req.EventAuthor),
 		}, nil
 	}
 
