@@ -160,9 +160,9 @@ func OnReceiveRequest(r *http.Request, secretToken string, endpoint string) (str
 
 		return req.EventName, evtData.Task.ProjectId, &mevt.MessageEventContent{
 			MsgType:       mevt.MsgNotice,
-			Body:          fmt.Sprintf("Task %s created by %s", evtData.Task.Title, req.EventAuthor),
+			Body:          fmt.Sprintf("Task %s created by %s", evtData.Task.Title, evtData.Task.CreatorName),
 			Format:        mevt.FormatHTML,
-			FormattedBody: fmt.Sprintf("Task <a href=\"%s\">%s</a> created <i>by %s</i>", taskUrl, evtData.Task.Title, req.EventAuthor),
+			FormattedBody: fmt.Sprintf("Task <a href=\"%s\">%s</a> created <i>by %s</i>", taskUrl, evtData.Task.Title, evtData.Task.CreatorName),
 		}, nil
 
 	case "task.assignee_change":

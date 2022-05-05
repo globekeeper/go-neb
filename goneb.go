@@ -234,6 +234,8 @@ func main() {
 		ConfigFile:   os.Getenv("CONFIG_FILE"),
 	}
 
+	// log.SetLevel(log.DebugLevel)
+
 	if e.LogDir != "" {
 		log.AddHook(dugong.NewFSHook(
 			filepath.Join(e.LogDir, "go-neb.log"),

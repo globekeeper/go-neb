@@ -9,6 +9,7 @@ import (
 
 	"github.com/elohmeier/ganboard/v2"
 	"github.com/matrix-org/go-neb/types"
+	log "github.com/sirupsen/logrus"
 	mevt "maunium.net/go/mautrix/event"
 	"maunium.net/go/mautrix/id"
 )
@@ -35,6 +36,28 @@ func (k *Service) ganboardClient() ganboard.Client {
 	}
 }
 
+func (k *Service) getKanboardUserId(userID id.UserID) (int, error) {
+	client := k.ganboardClient()
+
+	users, err := client.GetAllUsers()
+	if err != nil {
+		return 0, err
+	}
+
+	localpart, _, err := userID.ParseAndValidate()
+	if err != nil {
+		return 0, err
+	}
+
+	for _, user := range users {
+		if user.UserName == localpart {
+			return user.ID, nil
+		}
+	}
+
+	return 0, fmt.Errorf("user %s not found", localpart)
+}
+
 const createUsage = "Usage: !kanboard create <project_id> \"task title\""
 
 func (k *Service) cmdKanboardCreateTask(roomID id.RoomID, userID id.UserID, args []string) (interface{}, error) {
@@ -55,9 +78,16 @@ func (k *Service) cmdKanboardCreateTask(roomID id.RoomID, userID id.UserID, args
 		}, nil
 	}
 
+	creatorId, err := k.getKanboardUserId(userID)
+	if err != nil {
+		log.WithError(err).Error("failed to get kanboard user id")
+	}
+	log.WithField("creatorId", creatorId).Debug("kanboard creator id")
+
 	params := ganboard.TaskParams{
 		Title:     args[1],
 		ProjectID: projectID,
+		CreatorID: creatorId,
 	}
 
 	taskID, err := client.CreateTask(params)
