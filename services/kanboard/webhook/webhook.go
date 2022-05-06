@@ -93,7 +93,7 @@ func taskUrl(endpoint string, taskId int) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	u.Path = path.Join(u.Path, fmt.Sprintf("tasks/%d", taskId))
+	u.Path = path.Join(u.Path, fmt.Sprintf("task/%d", taskId))
 	return u.String(), nil
 }
 
