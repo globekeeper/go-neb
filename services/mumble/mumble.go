@@ -45,13 +45,14 @@ func (s *Service) Register(oldService types.Service, client types.MatrixClient) 
 					MsgType: "m.notice",
 				}
 				client.SendMessageEvent(id.RoomID(s.Room), mevt.EventMessage, msg)
-			} else if e.Type.Has(gumble.UserChangeDisconnected) {
-				msg := mevt.MessageEventContent{
-					Body:    fmt.Sprintf("User %s has left Mumble", e.User.Name),
-					MsgType: "m.notice",
-				}
-				client.SendMessageEvent(id.RoomID(s.Room), mevt.EventMessage, msg)
 			}
+			//  else if e.Type.Has(gumble.UserChangeDisconnected) {
+			//		msg := mevt.MessageEventContent{
+			//			Body:    fmt.Sprintf("User %s has left Mumble", e.User.Name),
+			//			MsgType: "m.notice",
+			//		}
+			//		client.SendMessageEvent(id.RoomID(s.Room), mevt.EventMessage, msg)
+			//	}
 		},
 	})
 	var tlsConfig tls.Config
