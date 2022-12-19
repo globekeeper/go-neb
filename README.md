@@ -23,11 +23,15 @@ Go-NEB is a [Matrix](https://matrix.org) bot written in Go. It is the successor 
 Clone and run (Requires Go 1.16+):
 
 ```bash
+brew install libolm
 go build github.com/matrix-org/go-neb
 BIND_ADDRESS=:4050 DATABASE_TYPE=sqlite3 DATABASE_URL=go-neb.db?_busy_timeout=5000 BASE_URL=http://localhost:4050 ./go-neb
 ```
 
-Get a Matrix user ID and access token. You can do this, for example, with the following curl command by replacing the user ID, password and Synapse URL with your own.
+To test locally, run local environment with `homeserver` listening on http://localhost:8008. This can be done using `adminas` automations tests.
+One can then retrieve seeded usersIds from the dynamically generated `.ci/USERS` file. Test password for these users is always `132465Aa`.
+
+Get a Matrix user ID and access token. You can do this, for example, with the following curl command by replacing the user ID, password and Synapse URL with your own. Postman login requests are set on Matrix environment as well.
 
 ```bash
 curl -X POST --header 'Content-Type: application/json' -d '{
@@ -37,7 +41,7 @@ curl -X POST --header 'Content-Type: application/json' -d '{
 }' 'http://localhost:8008/_matrix/client/r0/login'
 ```
 
-This is preferable to, for example, logging in via Riot and copying the access token and device ID from there, as then Riot will have uploaded its own device keys which Go-NEB won't have access to causing it to be unable to create encryption sessions.
+This is preferable to, for example, logging in via cloud envs and copying the access token and device ID from there, as then cloud envs will have uploaded its own device keys which Go-NEB won't have access to causing it to be unable to create encryption sessions.
 
 The response of this command will be a JSON object with an access token and device ID.
 
@@ -66,8 +70,11 @@ curl -X POST localhost:4050/admin/configureService --data-binary '{
 }'
 ```
 
+For simplicity, use Element app to login to another seeded user (different than the bot configured) to interact with the bot in an easily manipulated environment (creating a room to invite the bot to, etc...).
 Invite the bot user into a Matrix room and type `!echo hello world`. It will reply with `hello world`.
+Other types of services can be used, such as `alertmanager` type, but this will require additional setup and different interaction triggers (such as [sending a notification for `alertmanager`](https://globekeeper.postman.co/workspace/f5ae58c4-4f28-4de4-accd-be7c7f041c57/request/13078936-431eb7af-78c7-438e-a138-5bae41259f9d))
 
+Find prepared POSTMAN requests [here](https://globekeeper.postman.co/workspace/f5ae58c4-4f28-4de4-accd-be7c7f041c57/collection/13078936-0339af3c-bc14-4821-b354-1526630ca7eb?action=share&creator=13078936).
 
 ## Features
 
