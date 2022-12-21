@@ -68,8 +68,6 @@ github.com/dghubble/oauth1 v0.7.1 h1:JjbOVSVVkms9A4h/sTQy5Jb2nFuAAVb2qVYgenJPyrE
 github.com/dghubble/oauth1 v0.7.1/go.mod h1:0eEzON0UY/OLACQrmnjgJjmvCGXzjBCsZqL1kWDXtF0=
 github.com/die-net/lrucache v0.0.0-20210908122246-903d43d14082 h1:LUKETHr5WlkQHeK0CEm2Rd//bjfNk8CymqHJE+Vwa6A=
 github.com/die-net/lrucache v0.0.0-20210908122246-903d43d14082/go.mod h1:4d9drWV+btTB21Zyq/hXMaqjLHSm+dFm+gOkckqOXOw=
-github.com/elohmeier/ganboard/v2 v2.0.0-20220505125233-3d86e9d10093 h1:lFA5NfPtJ7g9A4jarYSwbfwVvjm1HH9Kb8CSe/wJLMs=
-github.com/elohmeier/ganboard/v2 v2.0.0-20220505125233-3d86e9d10093/go.mod h1:t+Z4Ts7QTlSWRUI4XMG+sfEN+svPYAEHWdBgTwzmbRY=
 github.com/envoyproxy/go-control-plane v0.9.0/go.mod h1:YTl/9mNaCwkRvm6d1a2C3ymFceY/DCBVvsKhRF0iEA4=
 github.com/envoyproxy/go-control-plane v0.9.1-0.20191026205805-5f8ba28d4473/go.mod h1:YTl/9mNaCwkRvm6d1a2C3ymFceY/DCBVvsKhRF0iEA4=
 github.com/envoyproxy/go-control-plane v0.9.4/go.mod h1:6rpuAdCZL397s3pYoYcLgu1mIlRU8Am5FuJP05cCM98=

@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
@@ -106,7 +106,7 @@ func buildTestClient(msgs *[]mevt.MessageEventContent) types.MatrixClient {
 		*msgs = append(*msgs, msg)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(`{"event_id":"$yup:event"}`)),
+			Body:       io.NopCloser(bytes.NewBufferString(`{"event_id":"$yup:event"}`)),
 		}, nil
 	}
 	matrixCli, _ := mautrix.NewClient("https://hs", "@neb:hs", "its_a_secret")

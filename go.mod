@@ -7,7 +7,6 @@ require (
 	github.com/andygrunwald/go-jira v1.15.1
 	github.com/dghubble/oauth1 v0.7.1
 	github.com/die-net/lrucache v0.0.0-20210908122246-903d43d14082
-	github.com/elohmeier/ganboard/v2 v2.0.0-20220505125233-3d86e9d10093
 	github.com/golang-jwt/jwt/v4 v4.4.1 // indirect
 	github.com/google/go-github v17.0.0+incompatible
 	github.com/gregjones/httpcache v0.0.0-20190611155906-901d90724c79

@@ -92,25 +92,6 @@ services:
     Config:
       api_key: "AIzaSyA4FD39m9"
 
-  - ID: "kanboard_service"
-    Type: "kanboard"
-    UserID: "@goneb:localhost"
-    Config:
-      endpoint: "https://my-kanboard/"
-      username: "jsonrpc"
-      password: "<api-token>"
-
-  - ID: "kanboard_webhook_service"
-    Type: "kanboard-webhook"
-    UserID: "@goneb:localhost"
-    Config:
-      endpoint: "https://my-kanboard/"
-      Rooms:
-        "!qmElAGdFYCHoCJuaNt:localhost":
-          Projects:
-            "3":
-              Events: ["task.move.column", "task.assignee_change"]
-
   - ID: "mumble_service"
     Type: "mumble"
     UserID: "@goneb:localhost"
