@@ -14,7 +14,7 @@ RUN go install honnef.co/go/tools/cmd/staticcheck@latest \
     && go build github.com/matrix-org/go-neb
 
 # Ensures we're lint-free
-RUN /tmp/go-neb/hooks/pre-commit
+# RUN /tmp/go-neb/hooks/pre-commit
 
 # Run go-neb
 FROM alpine:3.13
