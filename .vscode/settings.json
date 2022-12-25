@@ -1,0 +1,4 @@
+{
+    "go.lintTool": "golangci-lint",
+    "go.testTimeout": "2m"
+}
