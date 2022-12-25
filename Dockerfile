@@ -26,6 +26,7 @@ ENV BIND_ADDRESS=:4050 \
     GID=1337
 
 COPY --from=builder /tmp/go-neb/go-neb /usr/local/bin/go-neb
+COPY --from=builder /tmp/go-neb/config-stg.yaml /usr/local/bin/config-stg.yaml
 # Copy libolm.so
 COPY --from=builder /usr/local/lib/* /usr/local/lib/
 
