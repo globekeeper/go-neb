@@ -19,29 +19,29 @@
 # See the docs for /configureClient for the full list of options:
 # https://matrix-org.github.io/go-neb/pkg/github.com/matrix-org/go-neb/api/index.html#ClientConfig
 clients:
-  - UserID: "@djja:homeserver"
-    AccessToken: "y5z8v14R4t49nxQyZEVUI7gftfTaiiYUel45BX2Vcho"
-    DeviceID: "soryNOE5"
-    HomeserverURL: "http://localhost:8008"
+  - UserID: "@113:hs.globekeeper.com"
+    AccessToken: "oZpJ1gkpw_Z_O4fWgQ4erUO3QA-guN5oznTVvmC0Jf8"
+    DeviceID: "zw_CupXk"
+    HomeserverURL: "hs.globekeeper.com"
     Sync: false 
     AutoJoinRooms: false
     DisplayName: "AlertManager Bot"
 
-  # - UserID: "@907:dendrite.stg.globekeeper.com"
-  #   AccessToken: "3mLa-KErbt9dsGdPXow84pbw-Ko7r7G-kVvhRZy1vhg"
-  #   DeviceID: "IVFFT8Sw"
-  #   HomeserverURL: "dendrite.stg.globekeeper.com"
-  #   Sync: true
-  #   AutoJoinRooms: true
-  #   DisplayName: "Giphy Bot"
+  - UserID: "@114:hs.globekeeper.com"
+    AccessToken: "RgKMT6IC5cmRNJa0Gtiqh3cSG_YriAzY04yzzR84BdQ"
+    DeviceID: "bCmqcbLZ"
+    HomeserverURL: "hs.globekeeper.com"
+    Sync: true
+    AutoJoinRooms: true
+    DisplayName: "Giphy Bot"
 
-  # - UserID: "@908:dendrite.stg.globekeeper.com"
-  #   AccessToken: "Kj0CRKNA4pBrnNPCb_dW3plcG1DENpfMs-WNgzx45yE"
-  #   DeviceID: "VcOlPwUm"
-  #   HomeserverURL: "dendrite.stg.globekeeper.com"
-  #   Sync: false
-  #   AutoJoinRooms: true
-  #   DisplayName: "Wiki Bot"
+  - UserID: "@115:hs.globekeeper.com"
+    AccessToken: "rpBZOIULioQu1gQTCHHrLQApd9VQE9df8bIi2E4q9QQ"
+    DeviceID: "xnlHcLAe"
+    HomeserverURL: "hs.globekeeper.com"
+    Sync: false
+    AutoJoinRooms: true
+    DisplayName: "Wiki Bot"
 
 
 # The list of services which Go-NEB is aware of.
@@ -51,27 +51,27 @@ clients:
 services:
   - ID: "alertmanager_service"
     Type: "alertmanager"
-    UserID: "@djja:homeserver"
+    UserID: "@113:hs.globekeeper.com"
     Config:
       # This is for information purposes only. It should point to Go-NEB path as follows:
       # `/services/hooks/<base64 encoded service ID>`
       # Where in this case "service ID" is "alertmanager_service"
       # Make sure your BASE_URL can be accessed by the Alertmanager instance!
-      webhook_url: "http://localhost:8008/_globekeeper/connectbot/services/hooks/YWxlcnRtYW5hZ2VyX3NlcnZpY2U="
+      webhook_url: "https://hs.globekeeper.com/_globekeeper/connectbot/services/hooks/YWxlcnRtYW5hZ2VyX3NlcnZpY2U"
       # Each room will get the notification with the alert rendered with the given template
       rooms:
-        "!7QfCPmMsyVgJdxYe:homeserver": # The `Builds` roomId.
+        "!Q0ywt7gewijyrOLa:hs.globekeeper.com": # The `Builds` roomId.
           text_template: "{{range .Alerts -}} [{{ .Status }}] {{index .Labels \"alertname\" }}: {{index .Annotations \"description\"}} {{ end -}}"
           msg_type: "m.text"  # Must be either `m.text` or `m.notice`
 
-  # - ID: "giphy_service"
-  #   Type: "giphy"
-  #   UserID: "@907:dendrite.stg.globekeeper.com" # requires a Syncing client
-  #   Config:
-  #     api_key: "hSG7fp4ofT6UmqgNfob5wSFK3MPA7FWs"
-  #     use_downsized: false
+  - ID: "giphy_service"
+    Type: "giphy"
+    UserID: "@114:hs.globekeeper.com" # requires a Syncing client
+    Config:
+      api_key: "hSG7fp4ofT6UmqgNfob5wSFK3MPA7FWs"
+      use_downsized: false
 
-  # - ID: "wikipedia_service"
-  #   Type: "wikipedia"
-  #   UserID: "@908:dendrite.stg.globekeeper.com" # requires a Syncing client
-  #   Config:
+  - ID: "wikipedia_service"
+    Type: "wikipedia"
+    UserID: "@115:hs.globekeeper.com" # requires a Syncing client
+    Config:
