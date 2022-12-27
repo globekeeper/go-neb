@@ -61,7 +61,7 @@ services:
       # Each room will get the notification with the alert rendered with the given template
       rooms:
         "!XFow9eSZVMmBCwUg:dendrite.stg.globekeeper.com": # The `Builds` roomId.
-          text_template: "{{range .Alerts -}} [{{ .Status }}] {{index .Labels \"alertname\" }}: {{index .Annotations \"description\"}} {{ end -}}"
+          text_template: "{{range .Alerts -}} {{ .Status }} {{index .Labels \"alertname\" }}: {{index .Annotations \"description\"}} {{ end -}}"
           msg_type: "m.text"  # Must be either `m.text` or `m.notice`
 
   - ID: "giphy_service"
