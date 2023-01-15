@@ -28,18 +28,26 @@ clients:
     DisplayName: "AlertManager Bot"
 
   - UserID: "@114:hs.globekeeper.com"
-    AccessToken: "RgKMT6IC5cmRNJa0Gtiqh3cSG_YriAzY04yzzR84BdQ"
-    DeviceID: "bCmqcbLZ"
+    AccessToken: "K-vBGZEnSh6zqnb6BIoYDPFXFp5oC71MXDx6LMii2yE"
+    DeviceID: "R4FbT_9p"
     HomeserverURL: "hs.globekeeper.com"
     Sync: true
     AutoJoinRooms: true
     DisplayName: "Giphy Bot"
 
   - UserID: "@115:hs.globekeeper.com"
-    AccessToken: "rpBZOIULioQu1gQTCHHrLQApd9VQE9df8bIi2E4q9QQ"
-    DeviceID: "xnlHcLAe"
+    AccessToken: "jKw6m8aFu6FzMu95ofdXBaizlVasOtXr6HS1yaAAaVQ"
+    DeviceID: "icHcBXiE"
     HomeserverURL: "hs.globekeeper.com"
-    Sync: false
+    Sync: true
+    AutoJoinRooms: true
+    DisplayName: "Wiki Bot"
+
+  - UserID: "@120:hs.globekeeper.com"
+    AccessToken: "teu9VyJ6fvmnYxdI-lHkmZTAoXhuSzmrlwxiGmgKM8g"
+    DeviceID: "9pY_N9gt"
+    HomeserverURL: "hs.globekeeper.com"
+    Sync: true
     AutoJoinRooms: true
     DisplayName: "Wiki Bot"
 
@@ -74,4 +82,9 @@ services:
   - ID: "wikipedia_service"
     Type: "wikipedia"
     UserID: "@115:hs.globekeeper.com" # requires a Syncing client
+    Config:
+
+  - ID: "iosbuild_service"
+    Type: "iosbuild"
+    UserID: "@120:hs.globekeeper.com" # requires a Syncing client
     Config:
