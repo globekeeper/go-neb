@@ -3,6 +3,7 @@ package iosbuild
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -53,9 +54,13 @@ func (s *Service) cmdIosbuild(client types.MatrixClient, roomID id.RoomID, userI
 	}
 
 	// Make the request to the iosbuild endpoint
-	payload := bytes.NewBuffer([]byte(strings.Join(args, " ")))
+	jsonData := map[string]string{"text": strings.Join(args, " ")}
+	payload, err := json.Marshal(jsonData)
+	if err != nil {
+		return nil, fmt.Errorf("Failed to marshal request: %s, for json: %v", err.Error(), jsonData)
+	}
 
-	req, err := http.NewRequest("POST", hookListener, payload)
+	req, err := http.NewRequest("POST", hookListener, bytes.NewBuffer(payload))
 	if err != nil {
 		return nil, fmt.Errorf("Failed to create new request to hookListener")
 	}
