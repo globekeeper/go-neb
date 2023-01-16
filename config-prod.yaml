@@ -49,7 +49,7 @@ clients:
     HomeserverURL: "hs.globekeeper.com"
     Sync: true
     AutoJoinRooms: true
-    DisplayName: "Wiki Bot"
+    DisplayName: "iosBuild Bot"
 
 
 # The list of services which Go-NEB is aware of.
