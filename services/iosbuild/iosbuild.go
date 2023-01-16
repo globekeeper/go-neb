@@ -68,6 +68,7 @@ func (s *Service) cmdIosbuild(client types.MatrixClient, roomID id.RoomID, userI
 	if err != nil {
 		return nil, fmt.Errorf("Failed to create new request to hookListener")
 	}
+	req.Header.Add("Content-Type", "application/json")
 
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
