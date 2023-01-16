@@ -28,24 +28,24 @@ clients:
     DisplayName: "AlertManager Bot"
 
   - UserID: "@114:hs.globekeeper.com"
-    AccessToken: "8hsLF2NjfQ5oQzPrXW-ndF3DyVxQmg_PNLB_2KL85RE"
-    DeviceID: "8MLyqmzK"
+    AccessToken: "b7uxY9bbcVZHGXrSkuNGqJIyYYxWli4lRoLpvPIv9XA"
+    DeviceID: "LNGsSjKb"
     HomeserverURL: "hs.globekeeper.com"
     Sync: true
     AutoJoinRooms: true
     DisplayName: "Giphy Bot"
 
   - UserID: "@115:hs.globekeeper.com"
-    AccessToken: "43HFPUHjyjkxlL1_g8GBe1zCm57zL639_7PAQ4EL8do"
-    DeviceID: "1Mx41KUT"
+    AccessToken: "C3RZUPM_x1M-sPQvwaFw3nM_5ZkL4JWgFa8WDnixGM4"
+    DeviceID: "u1wXrEyT"
     HomeserverURL: "hs.globekeeper.com"
     Sync: true
     AutoJoinRooms: true
     DisplayName: "Wiki Bot"
 
   - UserID: "@120:hs.globekeeper.com"
-    AccessToken: "0lCsyHgOyZloJXQjQI7vO0AfYFwiZS1gsGWqqxnivDw"
-    DeviceID: "bJmfYYQS"
+    AccessToken: "o02Tuhh4BC_l4SRJrGolX2rAjjlEFqPAlgWrFqsJKm8"
+    DeviceID: "osapUeSA"
     HomeserverURL: "hs.globekeeper.com"
     Sync: true
     AutoJoinRooms: true

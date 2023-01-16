@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/matrix-org/go-neb/types"
+	log "github.com/sirupsen/logrus"
 	mevt "maunium.net/go/mautrix/event"
 	"maunium.net/go/mautrix/id"
 )
@@ -59,8 +60,11 @@ func (s *Service) cmdIosbuild(client types.MatrixClient, roomID id.RoomID, userI
 	if err != nil {
 		return nil, fmt.Errorf("Failed to marshal request: %s, for json: %v", err.Error(), jsonData)
 	}
-
-	req, err := http.NewRequest("POST", hookListener, bytes.NewBuffer(payload))
+	b := bytes.NewBuffer(payload)
+	log.WithFields(log.Fields{
+		"payload": b,
+	}).Info("iosbuild: Sending buffer payload")
+	req, err := http.NewRequest("POST", hookListener, b)
 	if err != nil {
 		return nil, fmt.Errorf("Failed to create new request to hookListener")
 	}
