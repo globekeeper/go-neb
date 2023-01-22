@@ -28,8 +28,8 @@ clients:
     DisplayName: "AlertManager Bot"
 
   - UserID: "@114:hs.globekeeper.com"
-    AccessToken: "RgKMT6IC5cmRNJa0Gtiqh3cSG_YriAzY04yzzR84BdQ"
-    DeviceID: "bCmqcbLZ"
+    AccessToken: "__oHJprcfToiQtDZk8cy7WipzFtPetMOaHgaFV5ySNE"
+    DeviceID: "uFGp8Dy7"
     HomeserverURL: "hs.globekeeper.com"
     Sync: true
     AutoJoinRooms: true
@@ -42,6 +42,14 @@ clients:
     Sync: false
     AutoJoinRooms: true
     DisplayName: "Wiki Bot"
+
+  - UserID: "@120:hs.globekeeper.com"
+    AccessToken: "cnWpQx_zDWwUBHTlj_s3_Kp3DONNPTmoWAkLOy4r9dc"
+    DeviceID: "htEkeD28"
+    HomeserverURL: "hs.globekeeper.com"
+    Sync: true
+    AutoJoinRooms: true
+    DisplayName: "iosBuild Bot"
 
 
 # The list of services which Go-NEB is aware of.

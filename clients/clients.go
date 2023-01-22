@@ -371,6 +371,9 @@ func (c *Clients) initClient(botClient *BotClient) error {
 
 	// TODO: Check that the access token is valid for the userID by peforming
 	// a request against the server.
+	logger := log.WithFields(log.Fields{
+		"service_user_id": client.UserID,
+	})
 
 	if err = botClient.InitOlmMachine(client, nebStore); err != nil {
 		return err
@@ -388,7 +391,9 @@ func (c *Clients) initClient(botClient *BotClient) error {
 	})
 
 	if config.AutoJoinRooms {
+		logger.Print("Bot will automatically join rooms upon invitations")
 		syncer.OnEventType(mevt.StateMember, func(_ mautrix.EventSource, event *mevt.Event) {
+			logger.Print(fmt.Sprintf("Invitation to room %s received by inviter %s. Event full details: %+v", event.RoomID, event.Sender, event))
 			c.onRoomMemberEvent(client, event)
 		})
 	}
