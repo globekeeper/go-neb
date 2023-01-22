@@ -28,8 +28,8 @@ clients:
     DisplayName: "AlertManager Bot"
 
   - UserID: "@114:hs.globekeeper.com"
-    AccessToken: "Bi-nMiunIu9dFbW_vM8bYPQ2ECYXyimd0zNqtkeH4dk"
-    DeviceID: "vj0oX7qJ"
+    AccessToken: "__oHJprcfToiQtDZk8cy7WipzFtPetMOaHgaFV5ySNE"
+    DeviceID: "uFGp8Dy7"
     HomeserverURL: "hs.globekeeper.com"
     Sync: true
     AutoJoinRooms: true
@@ -44,8 +44,8 @@ clients:
     DisplayName: "Wiki Bot"
 
   - UserID: "@120:hs.globekeeper.com"
-    AccessToken: "ZYeMRoS1gbc5tYG7sUwiN5Ug5ic58p0-zpGM77YTjSU"
-    DeviceID: "stkNBOBw"
+    AccessToken: "cnWpQx_zDWwUBHTlj_s3_Kp3DONNPTmoWAkLOy4r9dc"
+    DeviceID: "htEkeD28"
     HomeserverURL: "hs.globekeeper.com"
     Sync: true
     AutoJoinRooms: true
