@@ -1,12 +1,12 @@
 steps:
   - name: gcr.io/cloud-builders/docker
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/connectbot:$TAG_NAME', '-f', 'Dockerfile.prod', '.']
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/connectbot:$COMMIT_SHA', '-f', 'Dockerfile.prod', '.']
   - name: gcr.io/cloud-builders/kubectl
-    args: ['set', 'image', 'deployment/connectbot', 'connectbot=gcr.io/$PROJECT_ID/connectbot:$TAG_NAME']
+    args: ['set', 'image', 'deployment/connectbot', 'connectbot=gcr.io/$PROJECT_ID/connectbot:$COMMIT_SHA']
     env:
       - CLOUDSDK_CORE_PROJECT=globekeeper-production
       - CLOUDSDK_COMPUTE_ZONE=europe-west2-a
       - CLOUDSDK_CONTAINER_CLUSTER=synapse-production
 images:
-  - gcr.io/$PROJECT_ID/connectbot:$TAG_NAME
+  - gcr.io/$PROJECT_ID/connectbot:$COMMIT_SHA
 timeout: 480s
