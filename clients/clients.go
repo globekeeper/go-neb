@@ -326,9 +326,7 @@ func (c *Clients) onRoomMemberEvent(client *mautrix.Client, event *mevt.Event) {
 		})
 		logger.Print("Accepting invite from user")
 
-		content := struct {
-			Inviter id.UserID `json:"inviter"`
-		}{event.Sender}
+		content := map[string]string{"reason": "added", "inviter": event.Sender.String()}
 
 		if _, err := client.JoinRoom(event.RoomID.String(), "", content); err != nil {
 			logger.WithError(err).Print("Failed to join room")

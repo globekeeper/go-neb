@@ -36,10 +36,10 @@ clients:
     DisplayName: "Giphy Bot"
 
   - UserID: "@115:hs.globekeeper.com"
-    AccessToken: "rpBZOIULioQu1gQTCHHrLQApd9VQE9df8bIi2E4q9QQ"
-    DeviceID: "xnlHcLAe"
+    AccessToken: "UlbQ_82byWLTFBHSiAcMoULBxgQsZMp5uHOSH66fah4"
+    DeviceID: "NCskUj3s"
     HomeserverURL: "hs.globekeeper.com"
-    Sync: false
+    Sync: true
     AutoJoinRooms: true
     DisplayName: "Wiki Bot"
 
@@ -82,4 +82,9 @@ services:
   - ID: "wikipedia_service"
     Type: "wikipedia"
     UserID: "@115:hs.globekeeper.com" # requires a Syncing client
+    Config:
+
+  - ID: "iosbuild_service"
+    Type: "iosbuild"
+    UserID: "@120:hs.globekeeper.com" # requires a Syncing client
     Config:
