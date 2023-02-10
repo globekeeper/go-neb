@@ -44,8 +44,8 @@ clients:
     DisplayName: "Wiki Bot"
 
   - UserID: "@120:hs.globekeeper.com"
-    AccessToken: "xyDYzWdHJNIyKhG6VH5f-oMAz-1gsiXR9hdKW4pikJU"
-    DeviceID: "_Njoin1a"
+    AccessToken: "IVAi5Sc6ir1rdawpWRMi1cpnvXVdUofcs-9L2cdQwV8"
+    DeviceID: "JEDXw5yH"
     HomeserverURL: "hs.globekeeper.com"
     Sync: true
     AutoJoinRooms: true
