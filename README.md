@@ -216,10 +216,10 @@ CentOS to be able to build and run it.
 
 There's a bunch more tools this project uses when developing in order to do
 things like linting. Some of them are bundled with go (fmt and vet) but some
-are not. You should install the ones which are not:
+are not. You should install the ones which are not (NOTE: staticcheck after v0.3.3 introduces breaking changes that we haven't yet handled):
 
 ```bash
-go install honnef.co/go/tools/cmd/staticcheck@latest
+go install honnef.co/go/tools/cmd/staticcheck@v0.3.3
 go install github.com/fzipp/gocyclo/cmd/gocyclo@latest
 ```
 

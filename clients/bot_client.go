@@ -281,6 +281,7 @@ func (botClient *BotClient) SendRoomKeyRequest(userID id.UserID, deviceID id.Dev
 	senderKey id.SenderKey, sessionID id.SessionID, timeout time.Duration) (chan bool, error) {
 
 	ctx, _ := context.WithTimeout(context.Background(), timeout)
+	//lint:ignore SA1019 botClient.olmMachine.RequestRoomKey is deprecated: this only supports a single key request target, so the whole automatic cancelling feature isn't very useful.
 	return botClient.olmMachine.RequestRoomKey(ctx, userID, deviceID, roomID, senderKey, sessionID)
 }
 
