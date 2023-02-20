@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -36,7 +36,7 @@ func TestGithubWebhook(t *testing.T) {
 		msgs = append(msgs, msg)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(`{"event_id":"$yup:event"}`)),
+			Body:       io.NopCloser(bytes.NewBufferString(`{"event_id":"$yup:event"}`)),
 		}, nil
 	}
 	matrixCli, _ := mautrix.NewClient("https://hyrule", "@ghwebhook:hyrule", "its_a_secret")

@@ -7,7 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"html"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"strings"
 
@@ -26,7 +26,7 @@ func OnReceiveRequest(r *http.Request, secretToken string) (string, *github.Repo
 	// Verify the HMAC signature if NEB was configured with a secret token
 	eventType := r.Header.Get("X-GitHub-Event")
 	signatureSHA1 := r.Header.Get("X-Hub-Signature")
-	content, err := ioutil.ReadAll(r.Body)
+	content, err := io.ReadAll(r.Body)
 	if err != nil {
 		log.WithError(err).Print("Failed to read Github webhook body")
 		resErr := util.MessageResponse(400, "Failed to parse body")

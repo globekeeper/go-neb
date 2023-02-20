@@ -5,7 +5,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"math"
 	"net/http"
 	"strings"
@@ -38,9 +38,10 @@ type guggyGifResult struct {
 // Service contains the Config fields for the Guggy service.
 //
 // Example request:
-//   {
-//       "api_key": "fkweugfyuwegfweyg"
-//   }
+//
+//	{
+//	    "api_key": "fkweugfyuwegfweyg"
+//	}
 type Service struct {
 	types.DefaultService
 	// The Guggy API key to use when making HTTP requests to Guggy.
@@ -48,7 +49,9 @@ type Service struct {
 }
 
 // Commands supported:
-//    !guggy some search query without quotes
+//
+//	!guggy some search query without quotes
+//
 // Responds with a suitable GIF into the same room as the command.
 func (s *Service) Commands(client types.MatrixClient) []types.Command {
 	return []types.Command{
@@ -124,7 +127,7 @@ func (s *Service) text2gifGuggy(querySentence string) (*guggyGifResult, error) {
 		return nil, err
 	}
 	if res.StatusCode < 200 || res.StatusCode >= 300 {
-		resBytes, err := ioutil.ReadAll(res.Body)
+		resBytes, err := io.ReadAll(res.Body)
 		if err != nil {
 			log.WithError(err).Error("Failed to decode Guggy response body")
 		}

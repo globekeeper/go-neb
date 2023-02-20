@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"strings"
 	"sync"
@@ -48,7 +48,7 @@ func createRSSClient(t *testing.T, feedURL string) *Service {
 		}
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(rssFeedXML)),
+			Body:       io.NopCloser(bytes.NewBufferString(rssFeedXML)),
 		}, nil
 	})
 	cachingClient = &http.Client{Transport: rssTrans}
@@ -99,7 +99,7 @@ func TestHTMLEntities(t *testing.T) {
 			wg.Done()
 			return &http.Response{
 				StatusCode: 200,
-				Body: ioutil.NopCloser(bytes.NewBufferString(`
+				Body: io.NopCloser(bytes.NewBufferString(`
 					{"event_id":"$123456:hyrule"}	
 				`)),
 			}, nil

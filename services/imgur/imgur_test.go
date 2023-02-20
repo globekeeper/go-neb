@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"strings"
 	"testing"
@@ -73,7 +73,7 @@ func TestCommand(t *testing.T) {
 		}
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBuffer(b)),
+			Body:       io.NopCloser(bytes.NewBuffer(b)),
 		}, nil
 	})
 	// clobber the imgur service http client instance
@@ -96,12 +96,12 @@ func TestCommand(t *testing.T) {
 		if req.URL.String() == imgurImageURL { // getting the imgur image
 			return &http.Response{
 				StatusCode: 200,
-				Body:       ioutil.NopCloser(bytes.NewBufferString("some image data")),
+				Body:       io.NopCloser(bytes.NewBufferString("some image data")),
 			}, nil
 		} else if strings.Contains(req.URL.String(), "_matrix/media/r0/upload") { // uploading the image to matrix
 			return &http.Response{
 				StatusCode: 200,
-				Body:       ioutil.NopCloser(bytes.NewBufferString(`{"content_uri":"mxc://foo/bar"}`)),
+				Body:       io.NopCloser(bytes.NewBufferString(`{"content_uri":"mxc://foo/bar"}`)),
 			}, nil
 		}
 		return nil, fmt.Errorf("Unknown URL: %s", req.URL.String())

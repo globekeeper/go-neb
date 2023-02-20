@@ -4,7 +4,7 @@ package imgur
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"math/rand"
 	"net/http"
 	"net/url"
@@ -100,10 +100,11 @@ type imgurSearchResponse struct {
 // Service contains the Config fields for the Imgur service.
 //
 // Example request:
-//   {
-//			"client_id": "AIzaSyA4FD39..."
-//			"client_secret": "ASdsaijwdfASD..."
-//   }
+//
+//	  {
+//				"client_id": "AIzaSyA4FD39..."
+//				"client_secret": "ASdsaijwdfASD..."
+//	  }
 type Service struct {
 	types.DefaultService
 	// The Imgur client ID
@@ -113,7 +114,9 @@ type Service struct {
 }
 
 // Commands supported:
-//    !imgur some_search_query_without_quotes
+//
+//	!imgur some_search_query_without_quotes
+//
 // Responds with a suitable image into the same room as the command.
 func (s *Service) Commands(client types.MatrixClient) []types.Command {
 	return []types.Command{
@@ -264,7 +267,7 @@ func queryImgur(query, clientID string) ([]byte, error) {
 	}
 
 	// Read and return response body
-	bytes, err := ioutil.ReadAll(res.Body)
+	bytes, err := io.ReadAll(res.Body)
 	if err != nil {
 		return nil, err
 	}
@@ -273,7 +276,7 @@ func queryImgur(query, clientID string) ([]byte, error) {
 
 // response2String returns a string representation of an HTTP response body
 func response2String(res *http.Response) string {
-	bs, err := ioutil.ReadAll(res.Body)
+	bs, err := io.ReadAll(res.Body)
 	if err != nil {
 		return "Failed to decode response body"
 	}

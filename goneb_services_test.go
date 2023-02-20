@@ -3,18 +3,18 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
 
-	"github.com/matrix-org/go-neb/clients"
 	"github.com/matrix-org/go-neb/database"
 	"maunium.net/go/mautrix/crypto"
 	"maunium.net/go/mautrix/crypto/olm"
 	mevt "maunium.net/go/mautrix/event"
 	"maunium.net/go/mautrix/id"
+	"maunium.net/go/mautrix/util/dbutil"
 )
 
 func setupMockServer() (*http.ServeMux, *matrixTripper, *httptest.ResponseRecorder, chan string) {
@@ -74,13 +74,13 @@ func TestRespondToEcho(t *testing.T) {
 	mxTripper.Handle("POST", "/_matrix/client/r0/join/*", func(req *http.Request) (*http.Response, error) {
 		parts := strings.Split(req.URL.String(), "/")
 		joinedRoom = parts[len(parts)-1]
-		joinedRoomBody, _ = ioutil.ReadAll(req.Body)
+		joinedRoomBody, _ = io.ReadAll(req.Body)
 		return newResponse(200, `{}`), nil
 	})
 
 	var roomMsgBody []byte
 	mxTripper.Handle("PUT", "/_matrix/client/r0/rooms/!greatdekutree:hyrule/send/m.room.message/*", func(req *http.Request) (*http.Response, error) {
-		roomMsgBody, _ = ioutil.ReadAll(req.Body)
+		roomMsgBody, _ = io.ReadAll(req.Body)
 		return newResponse(200, `{}`), nil
 	})
 
@@ -193,13 +193,13 @@ func TestEncryptedRespondToEcho(t *testing.T) {
 	mxTripper.Handle("POST", "/_matrix/client/r0/join/*", func(req *http.Request) (*http.Response, error) {
 		parts := strings.Split(req.URL.String(), "/")
 		joinedRoom = parts[len(parts)-1]
-		joinedRoomBody, _ = ioutil.ReadAll(req.Body)
+		joinedRoomBody, _ = io.ReadAll(req.Body)
 		return newResponse(200, `{}`), nil
 	})
 
 	var decryptedMsg string
 	mxTripper.Handle("PUT", "/_matrix/client/r0/rooms/!greatdekutree:hyrule/send/m.room.encrypted/*", func(req *http.Request) (*http.Response, error) {
-		encryptedMsg, _ := ioutil.ReadAll(req.Body)
+		encryptedMsg, _ := io.ReadAll(req.Body)
 		var encryptedContent mevt.EncryptedEventContent
 		encryptedContent.UnmarshalJSON(encryptedMsg)
 		decryptedMsgBytes, _, err := igsMock.Internal.Decrypt(encryptedContent.MegolmCiphertext)
@@ -286,7 +286,12 @@ func TestEncryptedRespondToEcho(t *testing.T) {
 
 	// DB is initialized, store the megolm sessions from before for the bot to be able to decrypt and encrypt
 	sqlDB, dialect := database.GetServiceDB().(*database.ServiceDB).GetSQLDb()
-	cryptoStore := crypto.NewSQLCryptoStore(sqlDB, dialect, "@link:hyrule-mastersword", "mastersword", []byte("masterswordpickle"), clients.CryptoMachineLogger{})
+	var database *dbutil.Database
+	database, err = dbutil.NewWithDB(sqlDB, dialect)
+	if err != nil {
+		t.Errorf("Error creating a new DB: %v", err)
+	}
+	cryptoStore := crypto.NewSQLCryptoStore(database, database.Log, "@link:hyrule-mastersword", "mastersword", []byte("masterswordpickle"))
 	if err := cryptoStore.AddOutboundGroupSession(ogsBot); err != nil {
 		t.Errorf("Error storing bot OGS: %v", err)
 	}
@@ -294,7 +299,7 @@ func TestEncryptedRespondToEcho(t *testing.T) {
 	if err := cryptoStore.PutGroupSession("!greatdekutree:hyrule", identityKeyMock, igsBot.ID(), igsBot); err != nil {
 		t.Errorf("Error storing bot IGS: %v", err)
 	}
-	cryptoStore.PutDevices("@navi:hyrule", map[id.DeviceID]*crypto.DeviceIdentity{
+	cryptoStore.PutDevices("@navi:hyrule", map[id.DeviceID]*id.Device{
 		"NAVI": {
 			UserID:      "@navi:hyrule",
 			DeviceID:    "NAVI",

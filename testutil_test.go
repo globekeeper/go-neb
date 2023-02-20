@@ -3,7 +3,7 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"strings"
 
@@ -14,7 +14,7 @@ import (
 func newResponse(statusCode int, body string) *http.Response {
 	return &http.Response{
 		StatusCode: statusCode,
-		Body:       ioutil.NopCloser(bytes.NewBufferString(body)),
+		Body:       io.NopCloser(bytes.NewBufferString(body)),
 	}
 }
 

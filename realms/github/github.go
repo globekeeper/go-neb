@@ -6,7 +6,7 @@ import (
 	"crypto/rand"
 	"encoding/hex"
 	"encoding/json"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/url"
 
@@ -24,10 +24,11 @@ const RealmType = "github"
 // Realm can handle OAuth processes with github.com
 //
 // Example request:
-//  {
-//      "ClientSecret": "YOUR_CLIENT_SECRET",
-//      "ClientID": "YOUR_CLIENT_ID"
-//  }
+//
+//	{
+//	    "ClientSecret": "YOUR_CLIENT_SECRET",
+//	    "ClientID": "YOUR_CLIENT_ID"
+//	}
 type Realm struct {
 	id          string
 	redirectURL string
@@ -150,14 +151,16 @@ func (r *Realm) Register() error {
 // The request body is of type "github.AuthRequest". The response is of type "github.AuthResponse".
 //
 // Request example:
-//   {
-//       "RedirectURL": "https://optional-url.com/to/redirect/to/after/auth"
-//   }
+//
+//	{
+//	    "RedirectURL": "https://optional-url.com/to/redirect/to/after/auth"
+//	}
 //
 // Response example:
-//   {
-//       "URL": "https://github.com/login/oauth/authorize?client_id=abcdef&client_secret=acascacac...."
-//   }
+//
+//	{
+//	    "URL": "https://github.com/login/oauth/authorize?client_id=abcdef&client_secret=acascacac...."
+//	}
 func (r *Realm) RequestAuthSession(userID id.UserID, req json.RawMessage) interface{} {
 	state, err := randomString(10)
 	if err != nil {
@@ -240,7 +243,7 @@ func (r *Realm) OnReceiveRedirect(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 	defer res.Body.Close()
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		failWith(logger, w, 502, "Failed to read token response", err)
 		return

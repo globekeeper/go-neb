@@ -5,7 +5,7 @@ package google
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"math"
 	"net/http"
 	"net/url"
@@ -54,10 +54,11 @@ type googleImage struct {
 // Service contains the Config fields for the Google service.
 //
 // Example request:
-//   {
-//			"api_key": "AIzaSyA4FD39..."
-//			"cx": "ASdsaijwdfASD..."
-//   }
+//
+//	  {
+//				"api_key": "AIzaSyA4FD39..."
+//				"cx": "ASdsaijwdfASD..."
+//	  }
 type Service struct {
 	types.DefaultService
 	// The Google API key to use when making HTTP requests to Google.
@@ -67,7 +68,9 @@ type Service struct {
 }
 
 // Commands supported:
-//    !google image some_search_query_without_quotes
+//
+//	!google image some_search_query_without_quotes
+//
 // Responds with a suitable image into the same room as the command.
 func (s *Service) Commands(client types.MatrixClient) []types.Command {
 	return []types.Command{
@@ -189,7 +192,7 @@ func (s *Service) text2imgGoogle(query string) (*googleSearchResult, error) {
 
 // response2String returns a string representation of an HTTP response body
 func response2String(res *http.Response) string {
-	bs, err := ioutil.ReadAll(res.Body)
+	bs, err := io.ReadAll(res.Body)
 	if err != nil {
 		return "Failed to decode response body"
 	}

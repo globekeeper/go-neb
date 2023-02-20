@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"strings"
 	"testing"
@@ -16,7 +16,8 @@ import (
 )
 
 // TODO: It would be nice to tabularise this test so we can try failing different combinations of responses to make
-//       sure all cases are handled, rather than just the general case as is here.
+//
+//	sure all cases are handled, rather than just the general case as is here.
 func TestCommand(t *testing.T) {
 	database.SetServiceDB(&database.NopStorage{})
 	searchText := "Czechoslovakian bananna"
@@ -65,7 +66,7 @@ func TestCommand(t *testing.T) {
 		}
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBuffer(b)),
+			Body:       io.NopCloser(bytes.NewBuffer(b)),
 		}, nil
 	})
 	// clobber the Wikipedia service http client instance

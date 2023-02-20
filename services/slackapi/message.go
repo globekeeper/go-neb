@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"html/template"
-	"io/ioutil"
+	"io"
 	"mime"
 	"net/http"
 	"regexp"
@@ -150,7 +150,7 @@ func fetchAndEncodeImage(url *string) (data template.URL) {
 		contentType string
 	)
 
-	if body, err = ioutil.ReadAll(resp.Body); err != nil {
+	if body, err = io.ReadAll(resp.Body); err != nil {
 		return
 	}
 	if contentType, _, err = mime.ParseMediaType(resp.Header.Get("Content-Type")); err != nil {

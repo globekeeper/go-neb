@@ -264,14 +264,16 @@ func (s *Service) cmdForwardRoomKey(botClient *clients.BotClient, roomID id.Room
 }
 
 // Commands supported:
-//    !crypto_help  		Displays a help string
-//    !crypto_challenge 	Sets a challenge for a room which clients should reply to with !crypto_response
-//    !crypto_response		Used by the client to repeat the room challenge
-//    !crypto_new_session 	Invalidates the bot's current outgoing session
-// 	  !sas_verify_me 		Asks the bot to verify the sender
-//    !sas_decimal_code		Sends the sender's SAS code to the bot for verification
-//    !request_my_room_key	Asks the bot to request a room key from the sender
-//    !forward_me_room_key	Asks the bot to forward a room key to the sender
+//
+//	   !crypto_help  		Displays a help string
+//	   !crypto_challenge 	Sets a challenge for a room which clients should reply to with !crypto_response
+//	   !crypto_response		Used by the client to repeat the room challenge
+//	   !crypto_new_session 	Invalidates the bot's current outgoing session
+//		  !sas_verify_me 		Asks the bot to verify the sender
+//	   !sas_decimal_code		Sends the sender's SAS code to the bot for verification
+//	   !request_my_room_key	Asks the bot to request a room key from the sender
+//	   !forward_me_room_key	Asks the bot to forward a room key to the sender
+//
 // This service can be used for testing other clients by writing the commands above in a room where this service is enabled.
 func (s *Service) Commands(cli types.MatrixClient) []types.Command {
 	botClient := cli.(*clients.BotClient)

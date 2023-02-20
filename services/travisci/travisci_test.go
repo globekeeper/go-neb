@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -104,7 +104,7 @@ func TestTravisCI(t *testing.T) {
 			escKey, _ := json.Marshal(key)
 			return &http.Response{
 				StatusCode: 200,
-				Body: ioutil.NopCloser(bytes.NewBufferString(
+				Body: io.NopCloser(bytes.NewBufferString(
 					`{"config":{"notifications":{"webhook":{"public_key":` + string(escKey) + `}}}}`,
 				)),
 			}, nil
@@ -128,7 +128,7 @@ func TestTravisCI(t *testing.T) {
 		msgs = append(msgs, msg)
 		return &http.Response{
 			StatusCode: 200,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(`{"event_id":"$yup:event"}`)),
+			Body:       io.NopCloser(bytes.NewBufferString(`{"event_id":"$yup:event"}`)),
 		}, nil
 	}
 	matrixCli, _ := mautrix.NewClient("https://hyrule", "@travisci:hyrule", "its_a_secret")

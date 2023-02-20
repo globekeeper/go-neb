@@ -57,7 +57,7 @@ func (t MockTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 func TestCommandParsing(t *testing.T) {
 	var executedCmdArgs []string
 	cmds := []types.Command{
-		types.Command{
+		{
 			Path: []string{"test"},
 			Command: func(roomID id.RoomID, userID id.UserID, args []string) (interface{}, error) {
 				executedCmdArgs = args
@@ -114,7 +114,7 @@ func TestSASVerificationHandling(t *testing.T) {
 	}
 	otherUserID := id.UserID("otherUser")
 	otherDeviceID := id.DeviceID("otherDevice")
-	otherDevice := &crypto.DeviceIdentity{
+	otherDevice := &id.Device{
 		UserID:   otherUserID,
 		DeviceID: otherDeviceID,
 	}

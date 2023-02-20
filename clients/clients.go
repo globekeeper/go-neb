@@ -404,7 +404,6 @@ func (c *Clients) initClient(botClient *BotClient) error {
 		if err != nil {
 			log.WithFields(log.Fields{
 				"user_id":    config.UserID,
-				"device_id":  encContent.DeviceID,
 				"session_id": encContent.SessionID,
 				"sender_key": encContent.SenderKey,
 			}).WithError(err).Error("Failed to decrypt message")

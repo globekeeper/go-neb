@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	_ "net/http/pprof"
 	"os"
@@ -58,7 +58,7 @@ func loadFromConfig(db *database.ServiceDB, configFilePath string) (*api.ConfigF
 	// YAML bytes -> map[interface]interface -> map[string]interface -> JSON bytes -> NEB types
 
 	// Convert to YAML bytes
-	contents, err := ioutil.ReadFile(configFilePath)
+	contents, err := os.ReadFile(configFilePath)
 	if err != nil {
 		return nil, err
 	}
@@ -187,10 +187,10 @@ func setup(e envVars, mux *http.ServeMux, matrixClient *http.Client) {
 	mux.Handle("/test", util.MakeJSONAPI(&handlers.Heartbeat{}))
 	wh := handlers.NewWebhook(db, matrixClients)
 	mux.HandleFunc("/services/hooks/", util.Protect(wh.Handle))
-	rh := &handlers.RealmRedirect{db}
+	rh := &handlers.RealmRedirect{DB: db}
 	mux.HandleFunc("/realms/redirects/", util.Protect(rh.Handle))
 
-	mux.Handle("/verifySAS", util.MakeJSONAPI(&handlers.VerifySAS{matrixClients}))
+	mux.Handle("/verifySAS", util.MakeJSONAPI(&handlers.VerifySAS{Clients: matrixClients}))
 
 	// Read exclusively from the config file if one was supplied.
 	// Otherwise, add HTTP listeners for new Services/Sessions/Clients/etc.
@@ -201,13 +201,13 @@ func setup(e envVars, mux *http.ServeMux, matrixClient *http.Client) {
 
 		log.Info("Inserted ", len(cfg.Services), " services")
 	} else {
-		mux.Handle("/admin/getService", util.MakeJSONAPI(&handlers.GetService{db}))
-		mux.Handle("/admin/getSession", util.MakeJSONAPI(&handlers.GetSession{db}))
-		mux.Handle("/admin/configureClient", util.MakeJSONAPI(&handlers.ConfigureClient{matrixClients}))
+		mux.Handle("/admin/getService", util.MakeJSONAPI(&handlers.GetService{DB: db}))
+		mux.Handle("/admin/getSession", util.MakeJSONAPI(&handlers.GetSession{DB: db}))
+		mux.Handle("/admin/configureClient", util.MakeJSONAPI(&handlers.ConfigureClient{Clients: matrixClients}))
 		mux.Handle("/admin/configureService", util.MakeJSONAPI(handlers.NewConfigureService(db, matrixClients)))
-		mux.Handle("/admin/configureAuthRealm", util.MakeJSONAPI(&handlers.ConfigureAuthRealm{db}))
-		mux.Handle("/admin/requestAuthSession", util.MakeJSONAPI(&handlers.RequestAuthSession{db}))
-		mux.Handle("/admin/removeAuthSession", util.MakeJSONAPI(&handlers.RemoveAuthSession{db}))
+		mux.Handle("/admin/configureAuthRealm", util.MakeJSONAPI(&handlers.ConfigureAuthRealm{DB: db}))
+		mux.Handle("/admin/requestAuthSession", util.MakeJSONAPI(&handlers.RequestAuthSession{DB: db}))
+		mux.Handle("/admin/removeAuthSession", util.MakeJSONAPI(&handlers.RemoveAuthSession{DB: db}))
 	}
 	polling.SetClients(matrixClients)
 	if err := polling.Start(); err != nil {
@@ -246,7 +246,7 @@ func main() {
 				DisableSorting:   false,
 			}, &dugong.DailyRotationSchedule{GZip: false},
 		))
-		log.SetOutput(ioutil.Discard)
+		log.SetOutput(io.Discard)
 	}
 
 	log.Infof("Go-NEB (%+v)", e)

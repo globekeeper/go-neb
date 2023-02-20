@@ -4,7 +4,7 @@ package wikipedia
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/url"
 	"strings"
@@ -48,7 +48,9 @@ type Service struct {
 }
 
 // Commands supported:
-//    !wikipedia some_search_query_without_quotes
+//
+//	!wikipedia some_search_query_without_quotes
+//
 // Responds with a suitable article extract and link to the referenced page into the same room as the command.
 func (s *Service) Commands(client types.MatrixClient) []types.Command {
 	return []types.Command{
@@ -168,7 +170,7 @@ func (s *Service) text2Wikipedia(query string) (*wikipediaPage, error) {
 
 // response2String returns a string representation of an HTTP response body
 func response2String(res *http.Response) string {
-	bs, err := ioutil.ReadAll(res.Body)
+	bs, err := io.ReadAll(res.Body)
 	if err != nil {
 		return "Failed to decode response body"
 	}

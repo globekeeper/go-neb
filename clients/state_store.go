@@ -84,7 +84,10 @@ func (ss *NebStateStore) GetJoinedMembers(roomID id.RoomID) ([]id.UserID, error)
 		if stateEvent == nil {
 			continue
 		}
-		stateEvent.Content.ParseRaw(event.StateMember)
+		err := stateEvent.Content.ParseRaw(event.StateMember)
+		if err != nil {
+			return nil, errors.New("failed to parse state member event")
+		}
 		if stateEvent.Content.AsMember().Membership == event.MembershipJoin {
 			joinedMembers = append(joinedMembers, id.UserID(stateKey))
 		}

@@ -16,6 +16,7 @@ import (
 	"maunium.net/go/mautrix/crypto"
 	mevt "maunium.net/go/mautrix/event"
 	"maunium.net/go/mautrix/id"
+	"maunium.net/go/mautrix/util/dbutil"
 )
 
 // maximumVerifications is the number of maximum ongoing SAS verifications at a time.
@@ -43,10 +44,14 @@ func (botClient *BotClient) InitOlmMachine(client *mautrix.Client, nebStore *mat
 	if sdb, ok := database.GetServiceDB().(*database.ServiceDB); ok {
 		// Create an SQL crypto store based on the ServiceDB used
 		db, dialect := sdb.GetSQLDb()
-		accountID := botClient.config.UserID.String() + "-" + client.DeviceID.String()
-		sqlCryptoStore := crypto.NewSQLCryptoStore(db, dialect, accountID, client.DeviceID, []byte(client.DeviceID.String()+"pickle"), cryptoLogger)
+		var database *dbutil.Database
+		database, err = dbutil.NewWithDB(db, dialect)
+		if err != nil {
+			return err
+		}
+		sqlCryptoStore := crypto.NewSQLCryptoStore(database, database.Log, dialect, client.DeviceID, []byte(client.DeviceID.String()+"pickle"))
 		// Try to create the tables if they are missing
-		if err = sqlCryptoStore.CreateTables(); err != nil {
+		if err = sqlCryptoStore.DB.Upgrade(); err != nil {
 			return
 		}
 		cryptoStore = sqlCryptoStore
@@ -76,7 +81,7 @@ func (botClient *BotClient) InitOlmMachine(client *mautrix.Client, nebStore *mat
 			regexes = append(regexes, regex)
 		}
 	}
-	olmMachine.AcceptVerificationFrom = func(_ string, otherDevice *crypto.DeviceIdentity, _ id.RoomID) (crypto.VerificationRequestResponse, crypto.VerificationHooks) {
+	olmMachine.AcceptVerificationFrom = func(_ string, otherDevice *id.Device, _ id.RoomID) (crypto.VerificationRequestResponse, crypto.VerificationHooks) {
 		for _, regex := range regexes {
 			if regex.MatchString(otherDevice.UserID.String()) {
 				if atomic.LoadInt32(&botClient.ongoingVerificationCount) >= maximumVerifications {
@@ -182,7 +187,7 @@ func (botClient *BotClient) Sync() {
 
 // VerifySASMatch returns whether the received SAS matches the SAS that the bot generated.
 // It retrieves the SAS of the other device from the bot client's SAS sync map, where it was stored by the `SubmitDecimalSAS` function.
-func (botClient *BotClient) VerifySASMatch(otherDevice *crypto.DeviceIdentity, sas crypto.SASData) bool {
+func (botClient *BotClient) VerifySASMatch(otherDevice *id.Device, sas crypto.SASData) bool {
 	log.WithFields(log.Fields{
 		"otherUser":   otherDevice.UserID,
 		"otherDevice": otherDevice.DeviceID,
