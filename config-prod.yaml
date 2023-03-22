@@ -19,37 +19,21 @@
 # See the docs for /configureClient for the full list of options:
 # https://matrix-org.github.io/go-neb/pkg/github.com/matrix-org/go-neb/api/index.html#ClientConfig
 clients:
-  - UserID: "@113:hs.globekeeper.com"
-    AccessToken: "oZpJ1gkpw_Z_O4fWgQ4erUO3QA-guN5oznTVvmC0Jf8"
-    DeviceID: "zw_CupXk"
-    HomeserverURL: "hs.globekeeper.com"
-    Sync: false 
-    AutoJoinRooms: false
-    DisplayName: "AlertManager Bot"
-
-  - UserID: "@114:hs.globekeeper.com"
-    AccessToken: "__oHJprcfToiQtDZk8cy7WipzFtPetMOaHgaFV5ySNE"
-    DeviceID: "uFGp8Dy7"
+  - UserID: "@18:hs.globekeeper.com"
+    AccessToken: "bi1QSXCP8gZYqs28MyU9-JvnP7OqNy6dmmgSKikCh-A"
+    DeviceID: "fkmMswt7"
     HomeserverURL: "hs.globekeeper.com"
     Sync: true
     AutoJoinRooms: true
     DisplayName: "Giphy Bot"
 
-  - UserID: "@115:hs.globekeeper.com"
-    AccessToken: "UlbQ_82byWLTFBHSiAcMoULBxgQsZMp5uHOSH66fah4"
-    DeviceID: "NCskUj3s"
+  - UserID: "@17:hs.globekeeper.com"
+    AccessToken: "wVWeIodBMECoNblvtVIiFAZ8Dd8JFdr7rAMTEuGSV30"
+    DeviceID: "nnJJGRNh"
     HomeserverURL: "hs.globekeeper.com"
-    Sync: true
-    AutoJoinRooms: true
-    DisplayName: "Wiki Bot"
-
-  - UserID: "@120:hs.globekeeper.com"
-    AccessToken: "IVAi5Sc6ir1rdawpWRMi1cpnvXVdUofcs-9L2cdQwV8"
-    DeviceID: "JEDXw5yH"
-    HomeserverURL: "hs.globekeeper.com"
-    Sync: true
-    AutoJoinRooms: true
-    DisplayName: "iosBuild Bot"
+    Sync: false 
+    AutoJoinRooms: false
+    DisplayName: "Builds Bot"
 
 
 # The list of services which Go-NEB is aware of.
@@ -57,9 +41,16 @@ clients:
 # See the docs for /configureService for the full list of options:
 # https://matrix-org.github.io/go-neb/pkg/github.com/matrix-org/go-neb/api/index.html#ConfigureServiceRequest
 services:
+  - ID: "giphy_service"
+    Type: "giphy"
+    UserID: "@18:hs.globekeeper.com" # requires a Syncing client
+    Config:
+      api_key: "hSG7fp4ofT6UmqgNfob5wSFK3MPA7FWs"
+      use_downsized: false
+      
   - ID: "alertmanager_service"
     Type: "alertmanager"
-    UserID: "@113:hs.globekeeper.com"
+    UserID: "@17:hs.globekeeper.com"
     Config:
       # This is for information purposes only. It should point to Go-NEB path as follows:
       # `/services/hooks/<base64 encoded service ID>`
@@ -68,23 +59,6 @@ services:
       webhook_url: "https://hs.globekeeper.com/_globekeeper/connectbot/services/hooks/YWxlcnRtYW5hZ2VyX3NlcnZpY2U"
       # Each room will get the notification with the alert rendered with the given template
       rooms:
-        "!Q0ywt7gewijyrOLa:hs.globekeeper.com": # The `Builds` roomId.
+        "!rXr9EM30gXgXsWOx:hs.globekeeper.com": # The `Builds` roomId.
           text_template: "{{range .Alerts -}} {{ .Status }} {{index .Labels \"alertname\" }}: {{index .Annotations \"description\"}} {{ end -}}"
           msg_type: "m.text"  # Must be either `m.text` or `m.notice`
-
-  - ID: "giphy_service"
-    Type: "giphy"
-    UserID: "@114:hs.globekeeper.com" # requires a Syncing client
-    Config:
-      api_key: "hSG7fp4ofT6UmqgNfob5wSFK3MPA7FWs"
-      use_downsized: false
-
-  - ID: "wikipedia_service"
-    Type: "wikipedia"
-    UserID: "@115:hs.globekeeper.com" # requires a Syncing client
-    Config:
-
-  - ID: "iosbuild_service"
-    Type: "iosbuild"
-    UserID: "@120:hs.globekeeper.com" # requires a Syncing client
-    Config:
